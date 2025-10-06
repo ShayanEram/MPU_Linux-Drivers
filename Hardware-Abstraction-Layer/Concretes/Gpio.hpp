@@ -1,21 +1,18 @@
 #ifndef GPIO_HPP
 #define GPIO_HPP
 
-#include <gpiod.h>
-#include <stdexcept>
-#include <string>
+#include "IGpio.hpp"
 
-class GPIO 
+class GPIO : public IGpio
 {
 public:
-    enum class Direction { IN, OUT };
     
     GPIO(const std::string& chipPath, int lineOffset, Direction direction, int defaultValue = 0);
     ~GPIO();
 
-    void setValue(bool value);
-    bool getValue() const;
-    void toggleValue();
+    void setValue(bool value) override;
+    bool getValue() const override;
+    void toggleValue() override;
 
 private:
     struct gpiod_chip* chip;

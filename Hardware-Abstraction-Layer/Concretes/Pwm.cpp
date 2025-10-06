@@ -1,4 +1,7 @@
-#include "pwm.hpp"
+#include "Pwm.hpp"
+
+#include <fstream>
+#include <stdexcept>
 
 PWM::PWM(int chipIndex, int channelIndex) : _chip(chipIndex), _channel(channelIndex)
 {

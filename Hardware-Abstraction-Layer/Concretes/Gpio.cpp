@@ -1,4 +1,7 @@
-#include "gpio.hpp"
+#include "Gpio.hpp"
+
+#include <gpiod.h>
+#include <stdexcept>
 
 GPIO::GPIO(const std::string& chipPath, int lineOffset, Direction direction, int defaultValue):
     chip(nullptr), line(nullptr), offset(lineOffset)
@@ -16,7 +19,8 @@ GPIO::GPIO(const std::string& chipPath, int lineOffset, Direction direction, int
 
     if (direction == Direction::OUT) {
         ret = gpiod_line_request_output(line, "gpio_control", defaultValue);
-    } else {
+    } 
+    else {
         ret = gpiod_line_request_input(line, "gpio_control");
     }
 

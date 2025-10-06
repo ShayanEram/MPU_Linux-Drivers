@@ -1,4 +1,11 @@
-#include "i2c.hpp"
+#include "I2c.hpp"
+
+#include <stdexcept>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/i2c-dev.h>
+
 
 I2C::I2C(int busNumber, int deviceAddress) : _fd(-1), _bus(busNumber), _addr(deviceAddress)
 {
@@ -35,7 +42,8 @@ void I2C::writeBytes(const std::vector<uint8_t>& data)
 void I2C::writeRegister(uint8_t reg, uint8_t value) 
 {
     uint8_t buf[2] = { reg, value };
-    if (::write(_fd, buf, 2) != 2) {
+    if (::write(_fd, buf, 2) != 2) 
+    {
         throw std::runtime_error("I2C register write failed");
     }
 }
@@ -56,6 +64,7 @@ uint8_t I2C::readRegister(uint8_t reg)
     {
         throw std::runtime_error("I2C register select failed");
     }
+    
     uint8_t val;
     if (::read(_fd, &val, 1) != 1) 
     {

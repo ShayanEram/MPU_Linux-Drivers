@@ -1,20 +1,18 @@
 #ifndef PWM_HPP
 #define PWM_HPP
 
-#include <string>
-#include <fstream>
-#include <stdexcept>
+#include "IPwm.hpp"
 
-class PWM 
+class PWM : public IPwm
 {
 public:
 
     PWM(int chipIndex, int channelIndex);
     ~PWM();
 
-    void setPeriodNs(int periodNs) ;
-    void setDutyCycleNs(int dutyCycleNs);
-    void enable(bool enable) ;
+    void setPeriodNs(int periodNs) override;
+    void setDutyCycleNs(int dutyCycleNs) override;
+    void enable(bool enable) override;
     
 private:
 

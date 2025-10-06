@@ -1,0 +1,6 @@
+/ {
+    rc_capture0: rc-capture@0 {
+        compatible = "shayan,rc-capture";
+        rcin-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>; // adjust controller and line
+    };
+};

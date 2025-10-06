@@ -1,6 +1,13 @@
-#include "spi.hpp"
+#include "Spi.hpp"
 
-SPI::SPI(const std::string& device, uint32_t speed = 500000, uint8_t mode = SPI_MODE_0, uint8_t bits = 8)
+#include <stdexcept>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <cstring>
+
+Spi::Spi(const std::string& device, uint32_t speed = 500000, uint8_t mode = SPI_MODE_0, uint8_t bits = 8)
     : _fd(-1), _device(device)
 {
     _fd = open(dev.c_str(), O_RDWR);
@@ -18,12 +25,12 @@ SPI::SPI(const std::string& device, uint32_t speed = 500000, uint8_t mode = SPI_
         throw std::runtime_error("Failed to set max speed");
 }
 
-SPI::~SPI() 
+Spi::~Spi() 
 {
     if (_fd >= 0) close(_fd);
 }
 
-std::vector<uint8_t> SPI::transfer(const std::vector<uint8_t>& tx) 
+std::vector<uint8_t> Spi::transfer(const std::vector<uint8_t>& tx) 
 {
     std::vector<uint8_t> rx(tx.size());
     struct spi_ioc_transfer tr{};
@@ -38,13 +45,13 @@ std::vector<uint8_t> SPI::transfer(const std::vector<uint8_t>& tx)
     return rx;
 }
 
-void SPI::writeBytes(const std::vector<uint8_t>& tx) {
+void Spi::writeBytes(const std::vector<uint8_t>& tx) {
     if (::write(_fd, tx.data(), tx.size()) != (ssize_t)tx.size()) {
         throw std::runtime_error("SPI write failed");
     }
 }
 
-std::vector<uint8_t> SPI::readBytes(size_t length) {
+std::vector<uint8_t> Spi::readBytes(size_t length) {
     std::vector<uint8_t> tx(length, 0x00);
     return transfer(tx);
 }

@@ -1,4 +1,9 @@
-#include "uart.hpp"
+#include "Uart.hpp"
+
+#include <stdexcept>
+#include <fcntl.h>
+#include <unistd.h>
+#include <termios.h>
 
 UART::UART(const std::string& device, int baudrate = B115200) : _fd(-1), _dev(device)
 {
